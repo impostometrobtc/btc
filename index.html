@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body{
+				font-size: 17px;
+				font-family: arial;
+				background: #f4f4f4;
+				line-height: 1.5em;
+			}
+			header{
+				background:#333;
+				color:#fff;
+				padding:20px;
+				text-align: center;
+				border-bottom: 4px #000 solid;
+				margin-bottom: 10px;
+			}
+			#container{
+				width: 90%;
+				margin:auto;
+				padding: 10px;
+			}
+			#contBtc, #contBtc2{
+				text-align: center;
+				border-radius: 20px;
+				padding: 50px;
+			}
+			#preco, #camaro, #btcP{
+			    font-size: 18px;
+			    font-family: arial, helvetica;
+			    font-weight: bold;
+			    color: white;
+			    border: 1px solid dodgerblue;
+			    width: 450px;
+			    height: 100px;
+			    padding: 40px;
+			    box-sizing: border-box;
+			    background-color: #212121;
+			}
+		</style>
+	</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<body>
+		<header>
+			<h1>Impostômetro em Bitcoin</h1>
+		</header>
+
+
+
+
+
+
+
+		<div id="contBtc"></div>
+
+
+
+
+
+
+
+
+		<div class="container" align="center">
+		    <div class="col s12">
+		    	<div class="one">
+	        		<div id="preco">Calculando...</div>
+	        		
+	        	</div>
+	        </div>
+	    </div>
+
+
+
+
+
+
+
+
+
+
+	    <div id="contBtc2"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+		<script type="text/javascript">
+			var ws = new WebSocket("wss://api.bitfinex.com/ws");
+			ws.onopen = function() {
+			    ws.send(JSON.stringify({
+			        "event": "subscribe",
+			        "channel": "ticker",
+			        "pair": "BTCUSD"
+			    }));
+			};
+
+			ws.onmessage = function(msg) {
+			    var response = JSON.parse(msg.data);
+			    console.log(response);
+
+			    var hb = response[1];
+			    if (hb != "hb") {
+			    	var btcBrl = (response[7]*3.72).toFixed(2);
+			        document.getElementById("contBtc").textContent = "Gastamos o equivalente a";
+			        document.getElementById("preco").textContent = (2100000000000/btcBrl).toFixed(2) + " bitcoins";
+			        document.getElementById("contBtc2").textContent = "com impostos em 2017.";
+
+			    }
+			};
+		</script>
+	</body>
+</html>
